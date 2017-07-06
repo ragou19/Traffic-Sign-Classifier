@@ -1,10 +1,10 @@
-# **Traffic Sign Recognition Writeup** 
+# **Traffic Sign Recognition** 
 
-## Ramon Gougis
+## Writeup
 
 ---
 
-**Build a Traffic Sign Recognition Project**
+**Build a Traffic Sign Recognition CNN**
 
 The goals / steps of this project are the following:
 * Load the data set (see below for links to the project data set)
@@ -17,7 +17,7 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./examples/visualization.jpg "Visualization"
+[image1]: ./signs_by_type.png "Traffic Signs by Type"
 [image2]: ./examples/grayscale.jpg "Grayscaling"
 [image3]: ./examples/random_noise.jpg "Random Noise"
 [image4]: ./examples/placeholder.png "Traffic Sign 1"
