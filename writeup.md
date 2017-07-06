@@ -54,52 +54,66 @@ An exploratory visualization of the data set lies below. It is a bar chart showi
 
 ![alt text][image1]
 
-###Design and Test a Model Architecture
+### Design and Test a Model Architecture
 
-####1. Describe how you preprocessed the image data. What techniques were chosen and why did you choose these techniques? Consider including images showing the output of each preprocessing technique. Pre-processing refers to techniques such as converting to grayscale, normalization, etc. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, and provide example images of the additional data. Then describe the characteristics of the augmented training set like number of images in the set, number of images for each class, etc.)
+#### 1. Describe how you preprocessed the image data. What techniques were chosen and why did you choose these techniques? Consider including images showing the output of each preprocessing technique. Pre-processing refers to techniques such as converting to grayscale, normalization, etc. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, and provide example images of the additional data. Then describe the characteristics of the augmented training set like number of images in the set, number of images for each class, etc.)
 
-As a first step, I decided to convert the images to grayscale because ...
+As a first step, I brightened all of the images in the dataset. Investigation of many of the images showed that a large number were indistinguishable due to extremely poor lighting conditions. Lightening the images proportional to their difference from max brightness was intended to bring out more of their latent features while not affecting already well-lit signs too much.
 
-Here is an example of a traffic sign image before and after grayscaling.
+Next, the images were grayscaled because the color of the signs did not contribute to being able to distinguish them. All of the changes amongst the 43 classes of sign could be accounted for by differences in what shapes were printed on the signs.
 
-![alt text][image2]
+Realizing that accounting for brightness in dark images was not enough, the contrast of each image was heightened by applying histogram equalization to the dataset. This converts an image so that an equal proportion of each of its expressed intensities is represented.
 
-As a last step, I normalized the image data because ...
-
-I decided to generate additional data because ... 
-
-To add more data to the the data set, I used the following techniques because ... 
-
-Here is an example of an original image and an augmented image:
-
-![alt text][image3]
-
-The difference between the original data set and the augmented data set is the following ... 
+As a last step, I normalized the image data to allow pixellated values to take place in the region [-1,1], which allows for better processing with the model.
 
 
-####2. Describe what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
+#### 2. Describe what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
 
-My final model consisted of the following layers:
+My convnet model consists of three convolution and pooling blended layers, followed by four fully connected layers, two ReLU layers between the first, second, and third fully connected layers, and finally a softmax layer.
+
+Initially, my motivation for creating more layers than the LeNet architecture was to tailor my model for what I believed to be a more complicated dataset. Indeed, a dataset including colors and a larger variety of shapes would seem to require more layers. As I saw an improvement in accuracy after adding an additional fully connected layer, I felt no reason to revert from this decision, even after incorporating grayscale later into the problem.
+
+While tinkering with the model, I found that ReLUs should not be incorporated in the last two fully connected layers, while dropout, for this particular problem, would unfortunately sacrifice accuracy too much for its benefit to model stability and reversing overfitting to be considered.
+
+Here is a diagram of my final model and the layers it contains:
 
 | Layer         		|     Description	        					| 
 |:---------------------:|:---------------------------------------------:| 
 | Input         		| 32x32x3 RGB image   							| 
-| Convolution 3x3     	| 1x1 stride, same padding, outputs 32x32x64 	|
-| RELU					|												|
-| Max pooling	      	| 2x2 stride,  outputs 16x16x64 				|
-| Convolution 3x3	    | etc.      									|
-| Fully connected		| etc.        									|
+| Convolution 3x3     	| 1x1 stride, valid padding, outputs 32x32x9 	|
+| Max pooling           | 2x2 stride, outputs 							|
+| ReLU                  |                                               |
+| Convolution 3x3     	| 1x1 stride, valid padding, outputs 32x32x27 	|
+| Max pooling           | 2x2 stride, outputs 							|
+| ReLU                  |                                               |
+| Convolution 3x3     	| 1x1 stride, valid padding, outputs 32x32x81 	|
+| Max pooling           | 2x2 stride, outputs 							|
+| ReLU                  |                                               |
+| Flatten               |                                              	|
+| Fully connected		| outputs 194        							|
+| ReLU                  |                                               |
+| Fully connected		| outputs 116        							|
+| ReLU                  |                                               |
+| Fully connected		| outputs 71        							|
+| Fully connected		| outputs 43        							|
 | Softmax				| etc.        									|
-|						|												|
-|						|												|
- 
 
 
-####3. Describe how you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
+#### 3. Describe how you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
 
-To train the model, I used an ....
+To train the model, I used an Adaptive Moment Estimation (Adam) optimizer with a batch size of 256 and epoch setting of 50. Running the model multiple times led me to choose the following values for my hyperparameters:
 
-####4. Describe the approach taken for finding a solution and getting the validation set accuracy to be at least 0.93. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
+* Learning Rate: 0.0025
+* Mu: 0
+* Sigma: 0.04 / 128
+* Regularization Beta: 0
+
+An iterative process of changing hyperparameters one at a time was used to optimize each quantity in turn. The sigma was lessened by an integral factor in order to account for the normalization of the pixellated data described earlier.
+
+Note that the beta for regularization is 0. As with other parameters in the model, activating a regularization beta had too big a negative effect on accuracy to have included it in the final version. This may have been remedied if more images were contained in the dataset - or created for it, which is an aspect of the problem yet awaiting exploration.
+
+
+#### 4. Describe the approach taken for finding a solution and getting the validation set accuracy to be at least 0.93. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
 
 My final model results were:
 * training set accuracy of ?
