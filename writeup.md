@@ -6,18 +6,18 @@
 
 **Build a Traffic Sign Recognition CNN**
 
-The goals / steps of this project are the following:
-* Load the data set (see below for links to the project data set)
-* Explore, summarize and visualize the data set
-* Design, train and test a model architecture
-* Use the model to make predictions on new images
-* Analyze the softmax probabilities of the new images
-* Summarize the results with a written report
+In this project, I build a convolutional neural network based on the **German Traffic Sign Database Benchmark (GTSDB)** dataset and use it to predict German road signs not present in the set. The goals/steps of this project are the following:
+* Load the data set (see below for links to the project data set).
+* Explore, summarize and visualize the data set.
+* Design, train and test a model architecture.
+* Use the model to make predictions on new images.
+* Analyze the softmax probabilities of the new images.
+* Summarize the results with a written report.
 
 
 [//]: # (Image References)
 
-[image1]: ./signs_by_type.png "Traffic Signs by Type"
+[image1]: ./writeup_pics/signs_by_type.png "Traffic Signs by Type"
 [image2]: ./examples/grayscale.jpg "Grayscaling"
 [image3]: ./examples/random_noise.jpg "Random Noise"
 [image4]: ./examples/placeholder.png "Traffic Sign 1"
@@ -27,31 +27,30 @@ The goals / steps of this project are the following:
 [image8]: ./examples/placeholder.png "Traffic Sign 5"
 
 ## Rubric Points
-###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually and describe how I addressed each point in my implementation.  
+### Here I consider the [rubric points](https://review.udacity.com/#!/rubrics/481/view) assigned to this project individually and describe how I addressed each point in my implementation.
 
 ---
 ### Writeup / README
 
 #### 1. Provide a Writeup / README that includes all the rubric points and how you addressed each one. You can submit your writeup as markdown or pdf. You can use this template as a guide for writing the report. The submission includes the project code.
 
-You're reading it! and here is a link to my [project code](https://github.com/udacity/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)
+You're reading it! and here is a link to my [project code](https://github.com/ragou19/Traffic-Sign-Classifier/blob/master/Traffic_Sign_Classifier.ipynb).
 
 ### Data Set Summary & Exploration
 
 #### 1. Provide a basic summary of the data set. In the code, the analysis should be done using python, numpy and/or pandas methods rather than hardcoding results manually.
 
-I used the pandas library to calculate summary statistics of the traffic
-signs data set:
+Using numpy, summary statistics of the traffic signs data set were calculated:
 
-* The size of training set is 34799
-* The size of the validation set is 4410
-* The size of test set is 12630
-* The shape of a traffic sign image is (32, 32, 3)
-* The number of unique classes/labels in the data set is 43
+* There are 34799 images in the training set.
+* The validation set has 4410 images.
+* The test set consists of 12630 images.
+* The shape of a traffic sign image is (32, 32, 3).
+* The number of unique classes/labels in the data set is 43.
 
-####2. Include an exploratory visualization of the dataset.
+#### 2. Include an exploratory visualization of the dataset.
 
-Here is an exploratory visualization of the data set. It is a bar chart showing how the data is organized by sign type. Examining this bar chart allows us to see roughly the relative distribution of images across types, which has an effect on the likelihood of the model choosing that image once it is developed:
+An exploratory visualization of the data set lies below. It is a bar chart showing how the data is organized by sign type, the keys of which can be found in the [signnames.csv](https://github.com/ragou19/Traffic-Sign-Classifier/blob/master/signnames.csv) file contained in this repo. Examining this bar chart allows us to see roughly the relative distribution of images across types, which has an effect on the likelihood of the model choosing that image once it is developed:
 
 ![alt text][image1]
 
